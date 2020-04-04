@@ -2,7 +2,7 @@ import React from 'react'
 
 import classes from './Button.module.css';
 
-const button = (props) => {
+const Button = (props) => {
   let buttonClasses = [
     classes.ButtonWrapper,
     (props.position === 'onForm') ? classes.FormButtonWrapper : null
@@ -20,4 +20,4 @@ const button = (props) => {
   );
 };
 
-export default button;
+export default Button;

@@ -11,10 +11,12 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import WeatherDetails from '../../components/WeatherDetails/WeatherDetails';
 import Preview from '../../components/Preview/Preview';
 import ErrorNotice from '../../components/ErrorNotice/ErrorNotice';
+import Clock from "../../components/Clock/Clock";
 
 class App extends Component {
 
   state = {
+    date: new Date(),
     searchBarInput: '',
     weatherDetails: {
       temperature: null,
@@ -23,6 +25,23 @@ class App extends Component {
     loading: false,
     error: false
   };
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
 
   // Update state with current search bar input
   searchBarHandler = (e) => {
@@ -106,10 +125,10 @@ class App extends Component {
             // Set header color based on weather condition; if error, set color to red
             (this.state.error) ? "error" : this.state.weatherDetails.description
             ]}
-          onClickHandler={this.tryAgainHandler}/>
+          onClickHandler={this.tryAgainHandler}
+        />
         <main className={classes.AppMain}>
           <SearchBar
-            onKeyDown
             value={this.state.searchBarInput}
             onChangeHandler={this.searchBarHandler}
             onClickHandler={this.setWeather}
@@ -119,7 +138,9 @@ class App extends Component {
             {cardContent}
           </Card>
         </main>
-        <Footer onClickHandler={this.tryAgainHandler}/>
+        <Footer>
+          <Clock date={this.state.date}/>
+        </Footer>
       </div>
     );
   }

@@ -3,7 +3,7 @@ import React from 'react'
 import classes from './InputField.module.css';
 import assetMapping from '../../assets/assetMapping.json';
 
-const inputField = (props) => {
+const InputField = (props) => {
   return (
     <div className={classes.InputFieldWrapper}>
       <label htmlFor={props.name}>{props.label}</label>
@@ -21,4 +21,4 @@ const inputField = (props) => {
   );
 };
 
-export default inputField;
+export default InputField;

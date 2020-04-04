@@ -2,7 +2,7 @@ import React from 'react'
 
 import classes from './Card.module.css';
 
-const card = (props) => {
+const Card = (props) => {
   return (
     <div className={classes.Card}>
       {props.children}
@@ -10,4 +10,4 @@ const card = (props) => {
   );
 };
 
-export default card;
+export default Card;
