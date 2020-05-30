@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {MoonLoader} from 'react-spinners';
+import { MoonLoader } from 'react-spinners';
 
 import classes from './App.module.css';
 import assetMapping from '../../assets/assetMapping.json';
@@ -11,13 +11,15 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import WeatherDetails from '../../components/WeatherDetails/WeatherDetails';
 import Preview from '../../components/Preview/Preview';
 import ErrorNotice from '../../components/ErrorNotice/ErrorNotice';
-import Clock from "../../components/Clock/Clock";
+import Clock from '../../components/Clock/Clock';
 
 class App extends Component {
   state = {
     date: new Date(),
     searchBarInput: '',
     weatherDetails: {
+      city: null,
+      country: null,
       temperature: null,
       description: ''
     },
@@ -26,10 +28,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.timerID = setInterval(
-      () => this.tick(),
-      1000
-    );
+    this.timerID = setInterval(() => this.tick(), 1000);
   }
 
   componentWillUnmount() {
@@ -46,13 +45,13 @@ class App extends Component {
   searchBarHandler = (e) => {
     this.setState({
       searchBarInput: e.target.value
-    })
+    });
   };
 
   // if 'enter' key pressed => call setWeather handler
   keyPressedHandler = (e) => {
     if (e.key === 'Enter') {
-      this.setWeather()
+      this.setWeather();
     }
   };
 
@@ -62,7 +61,7 @@ class App extends Component {
       searchBarInput: '',
       weatherDetails: {},
       error: false
-    })
+    });
   };
 
   // Fetch weather information and update state
@@ -71,59 +70,69 @@ class App extends Component {
     const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
     const API_URL = process.env.REACT_APP_API_URL;
     const URL = API_URL + `?q=${city}&appid=${API_KEY}&units=metric`;
-    this.setState({
-      weatherDetails: {},
-      loading: true,
-      error: false
-    }, () => {
-      // Executed as callback function
-      fetch(URL)
-        .then(res => res.json())
-        .then(data => {
-          // If city exists, update weather details
-          if (data.cod === 200) {
+    this.setState(
+      {
+        weatherDetails: {},
+        loading: true,
+        error: false
+      },
+      () => {
+        // Executed as callback function
+        fetch(URL)
+          .then((res) => res.json())
+          .then((data) => {
+            // If city exists, update weather details
+            if (data.cod === 200) {
+              this.setState({
+                weatherDetails: {
+                  temperature: data.main.temp,
+                  description: data.weather[0].main,
+                  city: data.name,
+                  country: data.sys.country
+                },
+                loading: false,
+                searchBarInput: ''
+              });
+            } else {
+              // If city doesn't exist, throw error
+              throw data.cod;
+            }
+          })
+          .catch((err) => {
+            console.log(err);
             this.setState({
-              weatherDetails: {
-                temperature: data.main.temp,
-                description: data.weather[0].main
-              },
-              loading: false
+              loading: false,
+              error: true
             });
-          } else {
-            // If city doesn't exist, throw error
-            throw data.cod
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({
-            loading: false,
-            error: true
           });
-        });
-    });
+      }
+    );
   };
-
 
   render() {
     // Conditionally render card content
-    let cardContent = <Preview/>;
+    let cardContent = <Preview />;
     if (this.state.loading) {
-      cardContent = <MoonLoader/>;
+      cardContent = <MoonLoader />;
     } else if (this.state.error) {
-      cardContent = <ErrorNotice onClickHandler={this.tryAgainHandler}/>;
-    } else if (this.state.weatherDetails.temperature && this.state.weatherDetails.description !== '') {
+      cardContent = <ErrorNotice onClickHandler={this.tryAgainHandler} />;
+    } else if (
+      this.state.weatherDetails.temperature &&
+      this.state.weatherDetails.description !== ''
+    ) {
       // Display weather information if temperature and description exists
-      cardContent = <WeatherDetails data={this.state.weatherDetails}/>;
+      cardContent = <WeatherDetails data={this.state.weatherDetails} />;
     }
 
     return (
       <div className={classes.AppWrapper}>
         <Header
-          color={assetMapping.colors[
-            // Set header color based on weather condition; if error, set color to red
-            (this.state.error) ? "error" : this.state.weatherDetails.description
-            ]}
+          color={
+            assetMapping.colors[
+              // Set header color based on weather condition; if error, set color to red
+              this.state.error ? 'error' : this.state.weatherDetails.description
+            ]
+          }
           onClickHandler={this.tryAgainHandler}
         />
         <main className={classes.AppMain}>
@@ -132,13 +141,12 @@ class App extends Component {
             onChangeHandler={this.searchBarHandler}
             onClickHandler={this.setWeather}
             onKeyPressed={this.keyPressedHandler}
-            error={this.state.error}/>
-          <Card>
-            {cardContent}
-          </Card>
+            error={this.state.error}
+          />
+          <Card>{cardContent}</Card>
         </main>
         <Footer>
-          <Clock date={this.state.date}/>
+          <Clock date={this.state.date} />
         </Footer>
       </div>
     );

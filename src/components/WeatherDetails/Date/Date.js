@@ -4,13 +4,9 @@ import dateformat from 'dateformat';
 
 import classes from './Date.module.css';
 
-const date = (props) => {
+const date = () => {
   const today = new Date();
-  return (
-    <div className={classes.DateWrapper}>
-      {dateformat(today, "dddd, mmmm dd")}
-    </div>
-  );
+  return <div className={classes.DateWrapper}>{dateformat(today, 'dddd, mmmm dd')}</div>;
 };
 
 export default date;

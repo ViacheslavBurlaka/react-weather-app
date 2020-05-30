@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 import classes from './SearchBar.module.css';
 import InputField from '../../elements/InputField/InputField';
 import Button from '../../elements/Button/Button';
 
-const searchBar = (props) => {
+const searchBar = ({ error, value, onKeyPressed, onClickHandler, onChangeHandler }) => {
   return (
     <div className={classes.SearchBarWrapper}>
       <InputField
@@ -12,17 +12,17 @@ const searchBar = (props) => {
         name="city"
         label="Location"
         placeholder="Enter a city"
-        value={props.value}
-        keyPressed={props.onKeyPressed}
-        handleChange={props.onChangeHandler}
-        error={props.error}
+        value={value}
+        keyPressed={onKeyPressed}
+        handleChange={onChangeHandler}
+        error={error}
       />
       <Button
         name="searchSubmit"
         type="submit"
         position="onForm"
-        clicked={props.onClickHandler}
-        disabled={props.value <= 0}
+        clicked={onClickHandler}
+        disabled={!value}
       >
         Set
       </Button>

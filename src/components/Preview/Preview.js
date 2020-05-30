@@ -2,12 +2,13 @@ import React from 'react';
 
 import classes from './Preview.module.css';
 
-const Preview = (props) => {
+const Preview = () => {
   return (
     <img
       src={require('../../assets/images/Preview.svg')}
       alt="Weather App Icon"
-      className={classes.Preview}/>
+      className={classes.Preview}
+    />
   );
 };
 

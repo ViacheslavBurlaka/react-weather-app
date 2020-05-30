@@ -1,9 +1,7 @@
-.TemperatureWrapper {
-  color: #333;
-  font-size: 3.75rem;
-  margin: .5rem 0;
+.WeatherDataPlace {
+  font-size: 1.25rem;
 }
 
-.TemperatureWrapper .TemperatureSymbol {
-  font-size: 3.125rem;
+.WeatherDataPlace sup {
+  padding-left: 0.25rem;
 }

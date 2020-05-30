@@ -2,10 +2,11 @@ import React from 'react';
 
 import classes from './Temperature.module.css';
 
-const Temperature = (props) => {
+const Temperature = ({ degrees }) => {
   return (
     <div className={classes.TemperatureWrapper}>
-      {Math.round(props.degrees)}<span className={classes.TemperatureSymbol}>°</span>
+      {Math.round(degrees)}
+      <span className={classes.TemperatureSymbol}>°</span>
     </div>
   );
 };
