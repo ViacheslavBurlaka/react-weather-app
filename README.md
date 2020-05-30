@@ -1,4 +1,6 @@
-### React weather app
----
+Progressive Web App created using React.js and Open Weather API.
 
-https://viacheslavburlaka.github.io/react-weather-app/
+---
+[Watch app here](https://pwa-react-weather-app.netlify.app)
+
+![Screenshot](screenshot.png)
