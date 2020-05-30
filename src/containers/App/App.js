@@ -14,7 +14,6 @@ import ErrorNotice from '../../components/ErrorNotice/ErrorNotice';
 import Clock from "../../components/Clock/Clock";
 
 class App extends Component {
-
   state = {
     date: new Date(),
     searchBarInput: '',
